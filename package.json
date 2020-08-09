@@ -21,15 +21,23 @@
   "homepage": "https://github.com/Luke-zhang-04/luke-zhang-04-server#readme",
   "dependencies": {
     "@octokit/core": "^3.1.2",
-    "firebase-admin": "^8.10.0"
+    "firebase-admin": "^8.10.0",
+    "nice-try": "^2.0.1",
+    "url-parse": "^1.4.7"
   },
   "devDependencies": {
+    "@types/nice-try": "^2.0.0",
     "@types/node": "^14.0.7",
+    "@types/url-parse": "^1.4.3",
     "@typescript-eslint/eslint-plugin": "^3.8.0",
     "@typescript-eslint/parser": "^3.8.0",
     "eslint": "^7.6.0",
     "eslint-config-recommended": "^4.1.0",
     "eslint-plugin-prefer-arrow": "^1.2.2",
     "typescript": "^3.9.7"
+  },
+  "engines": {
+    "yarn": "1.22",
+    "node": "12"
   }
 }
