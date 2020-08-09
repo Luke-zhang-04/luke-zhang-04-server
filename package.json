@@ -4,6 +4,7 @@
   "description": "Server side code for Luke-zhang-04.github.io",
   "main": "lib/index.js",
   "scripts": {
+    "build": "npx tsc -p ."
   },
   "repository": {
     "type": "git",
