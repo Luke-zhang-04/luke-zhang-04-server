@@ -17,10 +17,18 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+import * as admin from "firebase-admin"
 import {Octokit} from "@octokit/core"
+import serviceAccount from "../admin-sdk.json"
 import {token} from "../github.json"
 
-const octokit = new Octokit({auth: token});
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: "https://luke-zhang.firebaseio.com"
+})
+
+const db = admin.firestore(),
+    octokit = new Octokit({auth: token});
 
 (async (): Promise<void> => {
     const {repository} = await octokit.graphql(

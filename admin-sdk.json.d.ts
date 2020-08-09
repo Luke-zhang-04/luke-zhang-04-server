@@ -17,12 +17,25 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+interface ServiceAccount {
+    projectId?: string;
+    clientEmail?: string;
+    privateKey?: string;
+  }
 
-interface Content {
-    token: string
+interface Content implements ServiceAccount {
+    type: "service_account",
+    projectId: "luke-zhang",
+    privateKeyId: string,
+    privateKey: string,
+    clientEmail: string,
+    clientId: string,
+    authUri: "https://accounts.google.com/o/oauth2/auth",
+    tokenUri: "https://oauth2.googleapis.com/token",
+    auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs",
+    client_x509_cert_url: string,
 }
 
 declare const content: Content
-    
-export const token: string
+
 export default content
