@@ -23,5 +23,9 @@
 const {updateProjectValues} = require("..")
 
 if (require.main === module) {
-    updateProjectValues()
+    (async () => {
+        await updateProjectValues()
+
+        console.log("Process complete. Waiting for Promises to resolve.")
+    })()
 }

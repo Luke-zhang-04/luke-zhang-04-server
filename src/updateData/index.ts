@@ -102,25 +102,41 @@ export const getProjectData = (collection: string): Promise<ProjectData[]> => db
 
     /**
      * Updates a project which has outdated information
-     * @param {ProjectQuery} lang - language data from GitHub GQL API
+     * @param {ProjectQuery} repo - language data from GitHub GQL API
      * @param {ProjectData} project - project data from Firestore
      * @returns {Array.<ProjectData | boolean>} new project data and a boolean if data is changed
      */
     getUpdatedProjectValues = (
-        lang: ProjectQuery,
+        repo: ProjectQuery,
         project: ProjectData,
     ): [ProjectData, boolean] => {
-        if (lang.languages.edges[0].node.name === project.lang.name) {
+        const pushedAt = new Date(repo.pushedAt).getTime()
+
+        if (
+            repo.languages.edges[0].node.name === project.lang.name &&
+            pushedAt === project.date
+        ) {
             return [project, false]
         }
 
-        const _lang = lang.languages.edges[0].node,
+        const _lang = repo.languages.edges[0].node,
             newProject = {...project}
 
         newProject.lang = {
             name: _lang.name,
             colour: _lang.color,
         }
+
+        newProject.date = pushedAt
+
+        const dateMessage = project.date === pushedAt
+                ? `Date not changed, staying constant at ${pushedAt}`
+                : `Date changed from ${project.date} to ${pushedAt}`,
+            langMessage = project.lang.name === newProject.lang.name
+                ? `Langauge not changed, staying constant at ${project.lang.name}`
+                : `Language changed from ${project.lang.name} to ${newProject.lang.name}`
+
+        console.table([newProject.name, dateMessage, langMessage])
 
         return [newProject, true]
     },
@@ -137,10 +153,11 @@ export const getProjectData = (collection: string): Promise<ProjectData[]> => db
                 lang: {
                     name: project.lang.name,
                     colour: project.lang.colour,
-                }
+                },
+                date: project.date,
             }, {merge: true})
 
-        console.log(`Changed language in project ${project.name} to ${project.lang.name}`)
+        console.log(`Changed data in project ${project.name} in Firestore`)
     }
 
 /**
@@ -168,6 +185,7 @@ const updateProjectValues = async (): Promise<void> => {
                 }
             })
             .catch((err: Error) => {
+                console.error(`Error thrown for project ${project.name}. Only partial commit to Firestore completed.`)
                 throw new Error(err.message)
             })
     }
