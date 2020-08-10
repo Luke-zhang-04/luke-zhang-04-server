@@ -26,12 +26,14 @@ import fs from "fs"
 import niceTry from "nice-try"
 import {token} from "../../github.json"
 
-interface ProjectQuery {
+export interface ProjectQuery {
     name: string,
     languages: {
         edges: {
-            node: string,
-            colour: string,
+            node: {
+                name: string,
+                color: string,
+            },
         }[],
     },
 }

@@ -26,5 +26,3 @@ import {updateProjectValues} from "./updateData"
 export {
     updateProjectValues
 }
-
-updateProjectValues()

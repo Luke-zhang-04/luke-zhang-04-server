@@ -20,9 +20,9 @@
  * @file main function for updating project values in database
  * @exports updateProjectValues - function for updating project values
  */
-
-import * as admin from "firebase-admin"
-import getRepoData from "./github"
+import * as admin from "firebase-admin" /* eslint-disable no-duplicate-imports */
+import type {ProjectQuery} from "./github"
+import getRepoData from "./github" /* eslint-enable no-duplicate-imports*/
 import parseUrl from "url-parse"
 import serviceAccount from "../../admin-sdk.json"
 
@@ -34,6 +34,9 @@ admin.initializeApp({
 const db = admin.firestore()
 
 /* eslint-disable @typescript-eslint/naming-convention */
+/**
+ * Structur of project data initially given from Firestore
+ */
 interface InitialProjectData {
     date: number,
     description: string,
@@ -52,10 +55,19 @@ interface InitialProjectData {
 }
 /* eslint-enable @typescript-eslint/naming-convention */
 
+/**
+ * Project data with additional information used throughout the project
+ */
 interface ProjectData extends InitialProjectData {
     name: string,
+    collection: string,
 }
 
+/**
+ * Gets project data from Firestroe
+ * @param {string} collection - name of collection to pull data from
+ * @returns {Promise.<Array.<ProjectData>>} promise of an array of project data
+ */
 const getProjectData = (collection: string): Promise<ProjectData[]> => db
         .collection(collection)
         .get()
@@ -66,24 +78,72 @@ const getProjectData = (collection: string): Promise<ProjectData[]> => db
                 data.push({
                     ...doc.data() as InitialProjectData,
                     name: doc.id,
+                    collection,
                 })
             })
 
             return data
+        })
+        .catch((err: Error) => {
+            throw new Error(err.message)
         }),
+
+    /**
+     * Asynchronous gets projects from both the collections and projects collections
+     * @returns {Promise.<Array.<ProjectData>>} all projects
+     */
     getProjects = (): Promise<ProjectData[]> => Promise.all([
         getProjectData("projects"),
         getProjectData("collections")
     ]).then((val) => [...val[0], ...val[1]])
+        .catch((err: Error) => {
+            throw new Error(err.message)
+        }),
 
+    /**
+     * Updates a project which has outdated information
+     * @param {ProjectQuery} lang - language data from GitHub GQL API
+     * @param {ProjectData} project - project data from Firestore
+     * @returns {void} void
+     */
+    updateProjectValue = async (
+        lang: ProjectQuery,
+        project: ProjectData,
+    ): Promise<void> => {
+        if (lang.languages.edges[0].node.name !== project.lang.name) {
+            const _lang = lang.languages.edges[0].node
+
+            await db.collection(project.collection)
+                .doc(project.name)
+                .set({
+                    lang: {
+                        name: _lang.name,
+                        colour: _lang.color,
+                    }
+                }, {merge: true})
+
+            console.log(`Changed language in project ${project.name} from ${project.lang.name} to ${_lang.name}`)
+        }
+    }
+
+/**
+ * Updates project values that have outdated information in Firestore
+ * @returns {Promise.<void>} void promise
+ */
 export const updateProjectValues = async (): Promise<void> => {
-    const data: ProjectData[] = await getProjects()
+    console.log("UPDATING PROJECT VALUES")
+    const data: ProjectData[] = await getProjects() // Get projects
 
     for (const project of data) {
         const parsed = parseUrl(project.links.GitHub), // eslint-disable-next-line
             projectName = parsed.pathname.split("/")[2],
             repoData = getRepoData(projectName)
 
-        Promise.resolve(repoData).then((val) => console.log(val))
+        // Update project values after Promise resolution
+        Promise.resolve(repoData)
+            .then((val) => updateProjectValue(val, project))
+            .catch((err: Error) => {
+                throw new Error(err.message)
+            })
     }
 }
