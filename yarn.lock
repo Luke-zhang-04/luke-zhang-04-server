@@ -392,7 +392,7 @@
   resolved "https://registry.yarnpkg.com/@types/nice-try/-/nice-try-2.0.0.tgz#02f55642fb75d120f03c7d8d15b5bb3465f45ddf"
   integrity sha512-hvaxJLCiXipFiDA3qB27uD0hFjyjMwyhW1phGrpLOlKYhnuJ6RinnHGpD51RTEuM7ATl2LFCVonizsP3J4qp8g==
 
-"@types/node@*", "@types/node@>= 8", "@types/node@^14.0.7":
+"@types/node@*", "@types/node@>= 8":
   version "14.0.27"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-14.0.27.tgz#a151873af5a5e851b51b3b065c9e63390a9e0eb1"
   integrity sha512-kVrqXhbclHNHGu9ztnAwSncIgJv/FaxmzXJvGXNdcCpV1b8u1/Mi6z6m0vwy0LzKeXFTPLH0NzwmoJ3fNCIq0g==

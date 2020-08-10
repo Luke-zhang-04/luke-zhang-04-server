@@ -18,10 +18,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 interface ServiceAccount {
-    projectId?: string;
-    clientEmail?: string;
-    privateKey?: string;
-  }
+    projectId?: string,
+    clientEmail?: string,
+    privateKey?: string,
+}
 
 interface Content implements ServiceAccount {
     type: "service_account",

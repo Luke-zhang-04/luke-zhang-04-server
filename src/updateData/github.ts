@@ -24,7 +24,29 @@
 import {Octokit} from "@octokit/core"
 import fs from "fs"
 import niceTry from "nice-try"
-import {token} from "../../github.json"
+
+declare type Token = typeof import("../../github.json").default
+
+/* eslint-disable global-require, @typescript-eslint/no-unsafe-return, no-sync, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-var-requires */
+let token = niceTry<string>(() => (require("../../github.json") as Token).token)
+const projectQuery = niceTry(() => fs.readFileSync("./gql/project.gql", "utf-8"))
+
+if (projectQuery === undefined) {
+    throw new Error("File ./gql/project.gql returned undefined")
+}
+
+if (token === undefined && process.env.GITHUB_TOKEN) {
+    /* eslint-disable prefer-destructuring */
+    token = (JSON.parse(process.env.GITHUB_TOKEN) as Token).token /* eslint-enable prefer-destructuring */
+}
+
+if (token === undefined) {
+    console.error(
+        "Invalid GitHub credentials. An attempt to make a query with the GitHub API will fail."
+    )
+}
+
+/* eslint-enable global-require, @typescript-eslint/no-unsafe-return, no-sync, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-assignment */
 
 export interface ProjectQuery {
     name: string,
@@ -41,18 +63,6 @@ export interface ProjectQuery {
 
 interface PreQuery {
     repository: ProjectQuery,
-}
-
-/* eslint-disable no-sync, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-assignment */
-let projectQuery = niceTry(() => fs.readFileSync("../gql/project.gql", "utf-8"))
-
-if (projectQuery === undefined) {
-    projectQuery = niceTry(() => fs.readFileSync("./gql/project.gql", "utf-8")) 
-}
-/* eslint-enable @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-assignment */
-
-if (projectQuery === undefined) {
-    throw new Error("File ./gql/project.gql returned undefined")
 }
 
 const octokit = new Octokit({auth: token}),

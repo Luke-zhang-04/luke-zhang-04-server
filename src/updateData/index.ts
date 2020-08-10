@@ -25,17 +25,38 @@ import type {ProjectQuery} from "./github"
 import getRepoData from "./github" /* eslint-enable no-duplicate-imports*/
 import niceTry from "nice-try"
 import parseUrl from "url-parse"
-import serviceAccount from "../../admin-sdk.json"
 
-try {
-    admin.initializeApp({
-        credential: admin.credential.cert(serviceAccount),
-        databaseURL: "https://luke-zhang.firebaseio.com"
-    })
-} catch (err) {
-    // eslint-disable-next-line
-    console.error("Invalid credentials. An attempt to update the database or read from it will fail")
+type AdminSDK = typeof import("../../admin-sdk.json").default
+
+/* eslint-disable global-require, @typescript-eslint/no-var-requires */
+let serviceAccount = niceTry<AdminSDK>(() => require("../../admin-sdk.json") as AdminSDK)/* eslint-enable global-require, @typescript-eslint/no-var-requires */
+
+if (serviceAccount === undefined && process.env.ADMIN_SDK) {
+    serviceAccount = JSON.parse(process.env.ADMIN_SDK) as AdminSDK
 }
+
+if (serviceAccount === undefined) {
+    console.error("Invalid Firebase credentials. An attempt to update the database or read from it will fail")
+    /* eslint-disable */
+    serviceAccount = {
+        type: "service_account",
+        projectId: "luke-zhang",
+        privateKeyId: "string",
+        privateKey: "string",
+        clientEmail: "string",
+        clientId: "string",
+        authUri: "https://accounts.google.com/o/oauth2/auth",
+        tokenUri: "https://oauth2.googleapis.com/token",
+        auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs",
+        client_x509_cert_url: "string",
+    }
+    /* eslint-enable */
+}
+
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: "https://luke-zhang.firebaseio.com"
+})
 
 const db = niceTry(() => admin.firestore())
 
