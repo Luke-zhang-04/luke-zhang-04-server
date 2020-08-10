@@ -33,7 +33,8 @@ try {
         databaseURL: "https://luke-zhang.firebaseio.com"
     })
 } catch (err) {
-    console.error(err)
+    // eslint-disable-next-line
+    console.error("Invalid credentials. An attempt to update the database or read from it will fail")
 }
 
 const db = niceTry(() => admin.firestore())
@@ -123,8 +124,6 @@ export const getProjectData = (collection: string): Promise<ProjectData[]> => {
     ): [ProjectData, boolean] => {
         const pushedAt = new Date(repo.pushedAt).getTime()
 
-        console.log(pushedAt, project.date)
-
         if (
             repo.languages.edges[0].node.name === project.lang.name &&
             pushedAt === project.date
@@ -163,7 +162,7 @@ export const getProjectData = (collection: string): Promise<ProjectData[]> => {
         if (!db) {
             throw new Error("db is undefined")
         }
-        
+
         await db.collection(project.collection)
             .doc(project.name)
             .set({
