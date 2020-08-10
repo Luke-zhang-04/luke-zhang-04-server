@@ -19,66 +19,39 @@
  */
 /* eslint-disable @typescript-eslint/no-var-requires */
 const {getUpdatedProjectValues} = require("../../lib/updateData"),
-    assert = require("assert")
+    assert = require("assert"),
+    {repo, project} = require("./changeBoth.json")
 
-const repo = {
-        name: "my-repo-4",
-        languages: {
-            edges: [
-                {
-                    node: {
-                        name: "TypeScript",
-                        color: "#2b7489",
-                    },
-                },
-            ],
-        },
-        pushedAt: new Date(3).toISOString()
-    },
-    project = {
-        date: 0,
-        description: "My repo 4",
-        file: "myRepo.svg",
-        links: {
-            GitHub: "https://github.com/"
-        },
-        tags: [],
-        lang: {
-            name: "Python",
-            colour: "#3572A5",
-        },
-        name: "my-repo-4",
-        collection: "projects",
-    },
+repo.pushedAt = new Date(3).toISOString()
 
-    changeNone = () => {
-        context("Change repository language and last commit date", () => {
-            const [
-                updatedValues,
+const changeNone = () => {
+    context("Change repository language and last commit date", () => {
+        const [
+            updatedValues,
+            didchange,
+        ] = getUpdatedProjectValues(repo, project)
+
+        it("Should be false", () => {
+            assert.strictEqual(
                 didchange,
-            ] = getUpdatedProjectValues(repo, project)
-
-            it("Should be false", () => {
-                assert.strictEqual(
-                    didchange,
-                    true,
-                )
-            })
-
-            it("Should be Python", () => {
-                assert.strictEqual(
-                    updatedValues.lang.name,
-                    "TypeScript",
-                )
-            })
-
-            it("Should be 0", () => {
-                assert.strictEqual(
-                    updatedValues.date,
-                    3,
-                )
-            })
+                true,
+            )
         })
-    }
+
+        it("Should be Python", () => {
+            assert.strictEqual(
+                updatedValues.lang.name,
+                "TypeScript",
+            )
+        })
+
+        it("Should be 0", () => {
+            assert.strictEqual(
+                updatedValues.date,
+                3,
+            )
+        })
+    })
+}
 
 exports.default = changeNone
