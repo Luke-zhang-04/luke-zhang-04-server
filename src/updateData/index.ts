@@ -23,15 +23,20 @@
 import * as admin from "firebase-admin" /* eslint-disable no-duplicate-imports */
 import type {ProjectQuery} from "./github"
 import getRepoData from "./github" /* eslint-enable no-duplicate-imports*/
+import niceTry from "nice-try"
 import parseUrl from "url-parse"
 import serviceAccount from "../../admin-sdk.json"
 
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-    databaseURL: "https://luke-zhang.firebaseio.com"
-})
+try {
+    admin.initializeApp({
+        credential: admin.credential.cert(serviceAccount),
+        databaseURL: "https://luke-zhang.firebaseio.com"
+    })
+} catch (err) {
+    console.error(err)
+}
 
-const db = admin.firestore()
+const db = niceTry(() => admin.firestore())
 
 /* eslint-disable @typescript-eslint/naming-convention */
 /**
@@ -68,25 +73,31 @@ interface ProjectData extends InitialProjectData {
  * @param {string} collection - name of collection to pull data from
  * @returns {Promise.<Array.<ProjectData>>} promise of an array of project data
  */
-export const getProjectData = (collection: string): Promise<ProjectData[]> => db
-        .collection(collection)
-        .get()
-        .then((snapshot) => {
-            const data: ProjectData[] = []
+export const getProjectData = (collection: string): Promise<ProjectData[]> => {
+        if (!db) {
+            throw new Error("db is undefined")
+        }
 
-            snapshot.forEach((doc) => {
-                data.push({
-                    ...doc.data() as InitialProjectData,
-                    name: doc.id,
-                    collection,
+        return db
+            .collection(collection)
+            .get()
+            .then((snapshot) => {
+                const data: ProjectData[] = []
+
+                snapshot.forEach((doc) => {
+                    data.push({
+                        ...doc.data() as InitialProjectData,
+                        name: doc.id,
+                        collection,
+                    })
                 })
-            })
 
-            return data
-        })
-        .catch((err: Error) => {
-            throw new Error(err.message)
-        }),
+                return data
+            })
+            .catch((err: Error) => {
+                throw new Error(err.message)
+            })
+    },
 
     /**
      * Asynchronous gets projects from both the collections and projects collections
@@ -149,6 +160,10 @@ export const getProjectData = (collection: string): Promise<ProjectData[]> => db
      * @returns {Promise.<void>} void proise
      */
     updateProjectValue = async (project: ProjectData): Promise<void> => {
+        if (!db) {
+            throw new Error("db is undefined")
+        }
+        
         await db.collection(project.collection)
             .doc(project.name)
             .set({
