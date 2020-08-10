@@ -20,9 +20,12 @@
  * @file calls the updateProjectValues function
  */
 /* eslint-disable @typescript-eslint/no-var-requires */
-
 const {updateProjectValues} = require("..")
 
 if (require.main === module) {
-    updateProjectValues()
+    (async () => {
+        await updateProjectValues()
+
+        console.log("Process complete. Waiting for Promises to resolve.")
+    })()
 }

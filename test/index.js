@@ -17,12 +17,17 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  * 
- * @file usage of the GitHub API to get GitHub repo data
- * @exports getRepoData - gets repository data
+ * @file main test file
  */
+/* eslint-disable @typescript-eslint/no-var-requires */
+const changeLang = require("./cases/changeLang").default,
+    changeDate = require("./cases/changeDate").default,
+    changeNone = require("./cases/changeNone").default,
+    changeBoth = require("./cases/changeBoth").default
 
-import updateProjectValues from "./updateData"
-
-export {
-    updateProjectValues
-}
+describe("Change repo data", () => {
+    changeLang()
+    changeDate()
+    changeNone()
+    changeBoth()
+})

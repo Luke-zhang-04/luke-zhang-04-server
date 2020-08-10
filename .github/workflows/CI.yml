@@ -26,3 +26,30 @@ jobs:
 
       - name: build
         run: yarn build
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: build
+          path: lib
+
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Download build
+        uses: actions/download-artifact@v2
+        with:
+          name: build
+          path: lib
+
+      - name: Create fake json credential files
+        run: bash ciPrep.sh
+
+      - name: install deps
+        run: yarn --frozen-lockfile
+
+      - name: test
+        run: yarn test

@@ -6,7 +6,8 @@
   "scripts": {
     "build": "npx tsc -p .",
     "lint": "npx eslint \"*/**/*.{js,jsx,ts,tsx}\"",
-    "lint:fix": "npx eslint \"*/**/*.{js,jsx,ts,tsx}\" --fix"
+    "lint:fix": "npx eslint \"*/**/*.{js,jsx,ts,tsx}\" --fix",
+    "test": "npx mocha"
   },
   "repository": {
     "type": "git",
@@ -34,6 +35,7 @@
     "eslint": "^7.6.0",
     "eslint-config-recommended": "^4.1.0",
     "eslint-plugin-prefer-arrow": "^1.2.2",
+    "mocha": "^8.1.1",
     "typescript": "^3.9.7"
   },
   "engines": {

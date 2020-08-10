@@ -36,6 +36,7 @@ export interface ProjectQuery {
             },
         }[],
     },
+    pushedAt: string,
 }
 
 interface PreQuery {
