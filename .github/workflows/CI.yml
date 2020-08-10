@@ -45,6 +45,9 @@ jobs:
           name: build
           path: lib
 
+      - name: Create fake json credential files
+        run: bash ciPrep.sh
+
       - name: install deps
         run: yarn --frozen-lockfile
 
