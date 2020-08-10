@@ -6,7 +6,8 @@
   "scripts": {
     "build": "npx tsc -p .",
     "lint": "npx eslint \"*/**/*.{js,jsx,ts,tsx}\"",
-    "lint:fix": "npx eslint \"*/**/*.{js,jsx,ts,tsx}\" --fix"
+    "lint:fix": "npx eslint \"*/**/*.{js,jsx,ts,tsx}\" --fix",
+    "test": "npx mocha"
   },
   "repository": {
     "type": "git",

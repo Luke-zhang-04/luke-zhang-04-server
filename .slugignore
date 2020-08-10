@@ -7,3 +7,4 @@ src
 src
 *.d.ts
 tsconfig.json
+test/

@@ -112,6 +112,8 @@ export const getProjectData = (collection: string): Promise<ProjectData[]> => db
     ): [ProjectData, boolean] => {
         const pushedAt = new Date(repo.pushedAt).getTime()
 
+        console.log(pushedAt, project.date)
+
         if (
             repo.languages.edges[0].node.name === project.lang.name &&
             pushedAt === project.date

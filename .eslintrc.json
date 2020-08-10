@@ -415,7 +415,7 @@
             }
         },
         {
-            "files": ["./test/*.js", "./tests/*.js"],
+            "files": ["./test/**/*.js", "./tests/**/*.js"],
             "env": {
                 "mocha": true
             }
