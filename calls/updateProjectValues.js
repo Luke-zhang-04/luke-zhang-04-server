@@ -20,7 +20,6 @@
  * @file calls the updateProjectValues function
  */
 /* eslint-disable @typescript-eslint/no-var-requires */
-
 const {updateProjectValues} = require("..")
 
 if (require.main === module) {

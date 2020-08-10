@@ -21,7 +21,7 @@
  * @exports getRepoData - gets repository data
  */
 
-import {updateProjectValues} from "./updateData"
+import updateProjectValues from "./updateData"
 
 export {
     updateProjectValues

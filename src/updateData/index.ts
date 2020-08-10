@@ -68,7 +68,7 @@ interface ProjectData extends InitialProjectData {
  * @param {string} collection - name of collection to pull data from
  * @returns {Promise.<Array.<ProjectData>>} promise of an array of project data
  */
-const getProjectData = (collection: string): Promise<ProjectData[]> => db
+export const getProjectData = (collection: string): Promise<ProjectData[]> => db
         .collection(collection)
         .get()
         .then((snapshot) => {
@@ -104,46 +104,73 @@ const getProjectData = (collection: string): Promise<ProjectData[]> => db
      * Updates a project which has outdated information
      * @param {ProjectQuery} lang - language data from GitHub GQL API
      * @param {ProjectData} project - project data from Firestore
-     * @returns {void} void
+     * @returns {Array.<ProjectData | boolean>} new project data and a boolean if data is changed
      */
-    updateProjectValue = async (
+    getUpdatedProjectValues = (
         lang: ProjectQuery,
         project: ProjectData,
-    ): Promise<void> => {
-        if (lang.languages.edges[0].node.name !== project.lang.name) {
-            const _lang = lang.languages.edges[0].node
-
-            await db.collection(project.collection)
-                .doc(project.name)
-                .set({
-                    lang: {
-                        name: _lang.name,
-                        colour: _lang.color,
-                    }
-                }, {merge: true})
-
-            console.log(`Changed language in project ${project.name} from ${project.lang.name} to ${_lang.name}`)
+    ): [ProjectData, boolean] => {
+        if (lang.languages.edges[0].node.name === project.lang.name) {
+            return [project, false]
         }
+
+        const _lang = lang.languages.edges[0].node,
+            newProject = {...project}
+
+        newProject.lang = {
+            name: _lang.name,
+            colour: _lang.color,
+        }
+
+        return [newProject, true]
+    },
+
+    /**
+     * Update project values to Firestore
+     * @param {ProjectData} project - project to change
+     * @returns {Promise.<void>} void proise
+     */
+    updateProjectValue = async (project: ProjectData): Promise<void> => {
+        await db.collection(project.collection)
+            .doc(project.name)
+            .set({
+                lang: {
+                    name: project.lang.name,
+                    colour: project.lang.colour,
+                }
+            }, {merge: true})
+
+        console.log(`Changed language in project ${project.name} to ${project.lang.name}`)
     }
 
 /**
  * Updates project values that have outdated information in Firestore
  * @returns {Promise.<void>} void promise
  */
-export const updateProjectValues = async (): Promise<void> => {
+const updateProjectValues = async (): Promise<void> => {
     console.log("UPDATING PROJECT VALUES")
-    const data: ProjectData[] = await getProjects() // Get projects
 
-    for (const project of data) {
+    for (const project of await getProjects()) { // Get projects
         const parsed = parseUrl(project.links.GitHub), // eslint-disable-next-line
             projectName = parsed.pathname.split("/")[2],
             repoData = getRepoData(projectName)
 
         // Update project values after Promise resolution
         Promise.resolve(repoData)
-            .then((val) => updateProjectValue(val, project))
+            .then((val) => {
+                const [
+                    updatedValues,
+                    didchange,
+                ] = getUpdatedProjectValues(val, project)
+
+                if (didchange) {
+                    updateProjectValue(updatedValues)
+                }
+            })
             .catch((err: Error) => {
                 throw new Error(err.message)
             })
     }
 }
+
+export default updateProjectValues
