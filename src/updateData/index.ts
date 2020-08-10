@@ -53,10 +53,14 @@ if (serviceAccount === undefined) {
     /* eslint-enable */
 }
 
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-    databaseURL: "https://luke-zhang.firebaseio.com"
-})
+try {
+    admin.initializeApp({
+        credential: admin.credential.cert(serviceAccount),
+        databaseURL: "https://luke-zhang.firebaseio.com"
+    })
+} catch (error) {
+    console.error("Invalid Firebase credentials. An attempt to update the database or read from it will fail")
+}
 
 const db = niceTry(() => admin.firestore())
 
