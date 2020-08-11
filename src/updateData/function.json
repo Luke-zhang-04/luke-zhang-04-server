@@ -4,9 +4,8 @@
       "name": "updateProjectValues",
       "type": "timerTrigger",
       "direction": "in",
-      "connection": "AzureWebJobsStorage",
-      "schedule": "0 0 0 * *"
+      "schedule": "0 0 0 * * *"
     }
   ],
-  "scriptFile": "../../lib/index.js"
+  "scriptFile": "../../lib/updateData/index.js"
 }
