@@ -8,5 +8,5 @@
       "schedule": "0 0 0 * *"
     }
   ],
-  "scriptFile": "../lib/index.js"
+  "scriptFile": "../../lib/index.js"
 }
