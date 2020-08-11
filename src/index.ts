@@ -20,9 +20,18 @@
  * @file usage of the GitHub API to get GitHub repo data
  * @exports getRepoData - gets repository data
  */
+import {AzureFunction, Context} from "@azure/functions"
+import updateValues from "./updateData"
 
-import updateProjectValues from "./updateData"
+export const updateProjectValues: AzureFunction = async (
+    context: Context
+): Promise<void> => {
+    context.log("Starting function")
 
-export {
-    updateProjectValues
+    if (require.main === module) {
+        await updateValues()
+
+        context.log("Process complete. Waiting for Promises to resolve.")
+    }
 }
+

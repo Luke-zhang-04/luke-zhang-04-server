@@ -1,6 +1,0 @@
-.github
-test
-.eslintignore
-.eslintrc.json
-.gitignore
-ciPrep.sh

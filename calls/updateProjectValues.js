@@ -20,7 +20,7 @@
  * @file calls the updateProjectValues function
  */
 /* eslint-disable @typescript-eslint/no-var-requires */
-const {updateProjectValues} = require("..")
+const updateProjectValues = require("../lib/updateData").default
 
 if (require.main === module) {
     (async () => {

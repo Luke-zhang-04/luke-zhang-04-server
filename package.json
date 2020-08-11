@@ -27,6 +27,7 @@
     "url-parse": "^1.4.7"
   },
   "devDependencies": {
+    "@azure/functions": "^1.2.2",
     "@types/nice-try": "^2.0.0",
     "@types/url-parse": "^1.4.3",
     "@typescript-eslint/eslint-plugin": "^3.8.0",
