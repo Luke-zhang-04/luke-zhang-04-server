@@ -1,2 +1,2 @@
 [config]
-command = npm ci && node_modules/.bin/ tsc -p .
+command = npm ci && node_modules/.bin/tsc -p .
