@@ -24,6 +24,8 @@ const {updateProjectValues} = require("../lib")
 
 if (require.main === module) {
     (async () => {
+        console.log("Starting function")
+
         await updateProjectValues()
 
         console.log("Process complete. Waiting for Promises to resolve.")
