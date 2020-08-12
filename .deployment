@@ -1,2 +1,2 @@
 [config]
-command = node node_modules/.bin/yarn --frozen-lockfile && node node_modules/.bin/yarn build
+command = npm ci && node_modules/.bin/ tsc -p .
