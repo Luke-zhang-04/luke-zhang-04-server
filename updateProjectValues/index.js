@@ -23,7 +23,7 @@
 const updateValues = require("../lib").updateProjectValues,
     niceTry = require("nice-try")
 
-exports.updateProjectValues = async (context = console) => {
+exports.updateProjectValues = async (context) => {
     niceTry(() => {
         if (context) {
             context.log("Starting function")
