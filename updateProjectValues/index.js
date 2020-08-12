@@ -22,7 +22,7 @@
  */
 const updateValues = require("../lib").updateProjectValues
 
-exports.updateProjectValues = async (context) => {
+exports.updateProjectValues = async (context = console) => {
     context.log("Starting function")
 
     await updateValues()
