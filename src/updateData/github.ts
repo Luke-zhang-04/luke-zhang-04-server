@@ -41,9 +41,11 @@ if (token === undefined && process.env.GITHUB_TOKEN) {
 }
 
 if (token === undefined) {
-    console.error(
-        "Invalid GitHub credentials. An attempt to make a query with the GitHub API will fail."
-    )
+    niceTry(() => {
+        console.error(
+            "Invalid GitHub credentials. An attempt to make a query with the GitHub API will fail."
+        )
+    })
 }
 
 /* eslint-enable global-require, @typescript-eslint/no-unsafe-return, no-sync, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-assignment */
