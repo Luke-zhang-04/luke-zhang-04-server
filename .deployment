@@ -1,2 +1,2 @@
 [config]
-command = yarn --frozen-lockfile && yarn build
+command = npx yarn --frozen-lockfile && npx yarn build
