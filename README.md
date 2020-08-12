@@ -2,7 +2,7 @@
 Server side code for Luke-zhang-04.github.io
 
 <p align="center">
-    <a href="https://www.heroku.com/"><img src="https://img.shields.io/badge/Deployed%20to-Heroku-%238d6faf?logo=heroku&style=for-the-badge&logoColor=%238d6faf" alt="deployed to Heroku"/></a>
+    <a href="https://www.heroku.com/"><img src="https://img.shields.io/badge/Deployed%20to-Azure-%23035dda?logo=microsoft-azure&style=for-the-badge&logoColor=%23035dda" alt="deployed to Heroku"/></a>
     <a href="https://graphql.org/"><img src="https://img.shields.io/badge/Uses-GraphQL-%23ff2fbb?style=for-the-badge&logo=graphql&logoColor=%23ff2fbb" alt="Uses GraphQL"/></a>
     <a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/Made%20with-TypeScript-%233178c6?style=for-the-badge&logo=typescript&logoColor=%233178c6" alt="Made with TypeScript"/></a>
 </p>
