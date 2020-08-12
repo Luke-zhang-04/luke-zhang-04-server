@@ -54,6 +54,8 @@
         "@typescript-eslint/space-before-function-paren": "off",
         "@typescript-eslint/type-annotation-spacing": "off",
         "@typescript-eslint/unified-signatures": "off",
+        "@typescript-eslint/no-var-requires": "off",
+        "@typescript-eslint/explicit-module-boundary-types": "off",
         "accessor-pairs": "error",
         "array-bracket-newline": ["error", {
             "multiline": true

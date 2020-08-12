@@ -17,15 +17,15 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  * 
- * @file calls the updateProjectValues function
+ * @file usage of the GitHub API to get GitHub repo data
+ * @exports getRepoData - gets repository data
  */
-/* eslint-disable @typescript-eslint/no-var-requires */
-const {updateProjectValues} = require("../lib")
+const updateValues = require("../lib").updateProjectValues
 
-if (require.main === module) {
-    (async () => {
-        await updateProjectValues()
+exports.updateProjectValues = async (context) => {
+    context.log("Starting function")
 
-        console.log("Process complete. Waiting for Promises to resolve.")
-    })()
+    await updateValues()
+
+    context.log("Process complete. Waiting for Promises to resolve.")
 }

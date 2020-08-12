@@ -1,0 +1,11 @@
+{
+    "bindings": [
+        {
+            "name": "updateProjectValues",
+            "type": "timerTrigger",
+            "direction": "in",
+            "schedule": "0 0 0 * * *"
+        }
+    ],
+    "scriptFile": "./index.js"
+}
