@@ -200,8 +200,6 @@ export const getProjectData = (collection: string): Promise<ProjectData[]> => {
                 },
                 date: project.date,
             }, {merge: true})
-
-        // output.log(`Changed data in project ${project.name} in Firestore`)
     }
 
 /**
