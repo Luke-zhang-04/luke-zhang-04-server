@@ -24,7 +24,7 @@ import * as admin from "firebase-admin" /* eslint-disable no-duplicate-imports *
 import type {ProjectQuery} from "./github"
 import getRepoData from "./github" /* eslint-enable no-duplicate-imports*/
 import niceTry from "nice-try"
-import output from "./output"
+// import output from "./output"
 import parseUrl from "url-parse"
 
 type AdminSDK = typeof import("../../admin-sdk.json").default
@@ -37,7 +37,7 @@ if (serviceAccount === undefined && process.env.ADMIN_SDK) {
 }
 
 if (serviceAccount === undefined) {
-    output.error("Invalid Firebase credentials. An attempt to update the database or read from it will fail")
+    // output.error("Invalid Firebase credentials. An attempt to update the database or read from it will fail")
     /* eslint-disable */
     serviceAccount = {
         type: "service_account",
@@ -60,7 +60,7 @@ try {
         databaseURL: "https://luke-zhang.firebaseio.com"
     })
 } catch (error) {
-    output.error("Invalid Firebase credentials. An attempt to update the database or read from it will fail")
+    // output.error("Invalid Firebase credentials. An attempt to update the database or read from it will fail")
 }
 
 const db = niceTry(() => admin.firestore())
@@ -167,6 +167,7 @@ export const getProjectData = (collection: string): Promise<ProjectData[]> => {
 
         newProject.date = pushedAt
 
+        /*
         const dateMessage = project.date === pushedAt
                 ? `Date not changed, staying constant at ${pushedAt}`
                 : `Date changed from ${project.date} to ${pushedAt}`,
@@ -175,6 +176,7 @@ export const getProjectData = (collection: string): Promise<ProjectData[]> => {
                 : `Language changed from ${project.lang.name} to ${newProject.lang.name}`
 
         output.table([newProject.name, dateMessage, langMessage])
+        */
 
         return [newProject, true]
     },
@@ -199,7 +201,7 @@ export const getProjectData = (collection: string): Promise<ProjectData[]> => {
                 date: project.date,
             }, {merge: true})
 
-        output.log(`Changed data in project ${project.name} in Firestore`)
+        // output.log(`Changed data in project ${project.name} in Firestore`)
     }
 
 /**
@@ -225,7 +227,7 @@ const updateProjectValues = async (): Promise<void> => {
                 }
             })
             .catch((err: Error) => {
-                output.error(`Error thrown for project ${project.name}. Only partial commit to Firestore completed.`)
+                // output.error(`Error thrown for project ${project.name}. Only partial commit to Firestore completed.`)
                 
                 throw new Error(err.message)
             })

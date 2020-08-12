@@ -20,7 +20,7 @@
  * @file usage of the GitHub API to get GitHub repo data
  * @exports getRepoData - gets repository data
  */
-
+/*
 import niceTry from "nice-try"
 
 const output = {
@@ -48,3 +48,4 @@ const output = {
 }
 
 export default output
+*/
