@@ -28,10 +28,8 @@ export const updateProjectValues: AzureFunction = async (
 ): Promise<void> => {
     context.log("Starting function")
 
-    if (require.main === module) {
-        await updateValues()
+    await updateValues()
 
-        context.log("Process complete. Waiting for Promises to resolve.")
-    }
+    context.log("Process complete. Waiting for Promises to resolve.")
 }
 
