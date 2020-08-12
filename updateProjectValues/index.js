@@ -20,12 +20,13 @@
  * @file usage of the GitHub API to get GitHub repo data
  * @exports getRepoData - gets repository data
  */
-const updateValues = require("../lib").updateProjectValues
+const updateValues = require("../lib").updateProjectValues,
+    niceTry = require("nice-try")
 
 exports.updateProjectValues = async (context = console) => {
-    context.log("Starting function")
-
+    niceTry(() => context.log("Starting function"))
+    
     await updateValues()
 
-    context.log("Process complete. Waiting for Promises to resolve.")
+    niceTry()(() => context.log("Process complete. Waiting for Promises to resolve."))
 }
