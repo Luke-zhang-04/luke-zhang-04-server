@@ -36,7 +36,7 @@ jobs:
           path: lib
 
       - name: install deps
-        run: yarn --frozen-lockfile --production
+        run: yarn --production
 
       - name: zip files
         run: zip updateProjectValues -r gql lib LICENSE package.json README.md yarn.lock node_modules
