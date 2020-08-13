@@ -39,7 +39,7 @@ jobs:
         run: yarn --frozen-lockfile --production
 
       - name: zip files
-        run: zip updateProjectValues -r gql lib LICENSE package.json README.md yarn.lock
+        run: zip updateProjectValues -r gql lib LICENSE package.json README.md yarn.lock node_modules
 
       - name: deploy to AWS Lambda
         uses: appleboy/lambda-action@master
