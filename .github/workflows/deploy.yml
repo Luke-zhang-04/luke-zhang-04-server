@@ -39,13 +39,14 @@ jobs:
         run: yarn --production
 
       - name: zip files
-        run: zip updateProjectValues -r gql lib package.json README.md yarn.lock node_modules
+        run: zip updateProjectValues -r gql lib node_modules index.js
 
       - name: deploy to AWS Lambda
         uses: appleboy/lambda-action@master
         with:
           aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_session_token: ${{ secrets.AWS_SESSION_TOKEN }}
           aws_region: us-east-1
           function_name: luke-zhang-04
           zip_file: updateProjectValues.zip
