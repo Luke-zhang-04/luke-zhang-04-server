@@ -207,6 +207,8 @@ export const getProjectData = (collection: string): Promise<ProjectData[]> => {
  */
 const updateProjectValues = async (): Promise<void> => {
     for (const project of await getProjects()) { // Get projects
+        console.log(`Updating ${project.name}`)
+
         const parsed = parseUrl(project.links.GitHub), // eslint-disable-next-line
             projectName = parsed.pathname.split("/")[2],
             repoData = getRepoData(projectName)
