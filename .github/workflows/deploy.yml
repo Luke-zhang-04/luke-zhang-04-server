@@ -1,0 +1,51 @@
+name: Deploy
+
+on: 
+  push:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: install deps
+        run: yarn --frozen-lockfile
+
+      - name: build
+        run: yarn build
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: build
+          path: lib
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Download build
+        uses: actions/download-artifact@v2
+        with:
+          name: build
+          path: lib
+
+      - name: install deps
+        run: yarn --frozen-lockfile --production
+
+      - name: zip files
+        run: zip updateProjectValues -r gql lib LICENSE package.json README.md yarn.lock
+
+      - name: deploy to AWS Lambda
+        uses: appleboy/lambda-action@master
+        with:
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_region: ${{ secrets.AWS_REGION }}
+          function_name: luke-zhang-04
+          zip_file: updateProjectValues.zip
