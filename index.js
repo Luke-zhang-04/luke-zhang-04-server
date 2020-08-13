@@ -20,8 +20,14 @@
  * @exports handler AWS Lambda export
  */
 
-exports.handler = (event, context) => {
-    console.log(`EVENT: \n${JSON.stringify(event, null, 2)}`)
+const {updateProjectValues} = require("./lib")
 
-    return context.logStreamName
+exports.handler = async (event, context) => {
+    console.log("Starting function")
+
+    await updateProjectValues()
+
+    console.log("Process complete. Waiting for Promises to resolve.")
+
+    return 0
 }
