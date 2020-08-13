@@ -220,14 +220,14 @@ const updateProjectValues = async (): Promise<void> => {
     return Promise.all(repoData)
         .then((repo) => {
             for (const [val, project] of repo) {
-                console.log(`Looking for changes in ${project}`)
+                console.log(`Looking for changes in ${project.name}`)
                 const [
                     updatedValues,
                     didchange,
                 ] = getUpdatedProjectValues(val, project)
 
                 if (didchange) {
-                    console.log(`Changes found in ${project}, updating values`)
+                    console.log(`Changes found in ${project.name}, updating values`)
                     updateProjectValue(updatedValues)
                 }
             }
