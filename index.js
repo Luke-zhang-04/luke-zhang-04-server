@@ -23,7 +23,7 @@
 const {updateProjectValues} = require("./lib")
 
 exports.handler = async (event, context) => {
-    console.log("Starting function")
+    console.log("Starting function", event, context)
 
     await updateProjectValues()
 
