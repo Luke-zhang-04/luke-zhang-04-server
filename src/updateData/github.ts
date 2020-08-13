@@ -22,6 +22,7 @@
  */
 
 import {Octokit} from "@octokit/core"
+import type {ProjectData} from "."
 import fs from "fs"
 import niceTry from "nice-try"
 
@@ -64,7 +65,10 @@ interface PreQuery {
 }
 
 const octokit = new Octokit({auth: token}),
-    getRepoData = async (name: string): Promise<ProjectQuery> => {
+    getRepoData = async (
+        name: string,
+        project: ProjectData,
+    ): Promise<[ProjectQuery, ProjectData]> => {
         if (projectQuery === undefined) {
             throw new Error("File ./gql/project.gql returned undefined")
         }
@@ -73,7 +77,7 @@ const octokit = new Octokit({auth: token}),
             name,
         }) as PreQuery
 
-        return repository
+        return [repository, project]
     }
 
 export default getRepoData

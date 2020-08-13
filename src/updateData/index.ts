@@ -89,7 +89,7 @@ interface InitialProjectData {
 /**
  * Project data with additional information used throughout the project
  */
-interface ProjectData extends InitialProjectData {
+export interface ProjectData extends InitialProjectData {
     name: string,
     collection: string,
 }
@@ -206,16 +206,20 @@ export const getProjectData = (collection: string): Promise<ProjectData[]> => {
  * @returns {Promise.<void>} void promise
  */
 const updateProjectValues = async (): Promise<void> => {
+    const repoData: Promise<[ProjectQuery, ProjectData]>[] = []
+
     for (const project of await getProjects()) { // Get projects
         console.log(`Reading "${project.name}"`)
 
         const parsed = parseUrl(project.links.GitHub), // eslint-disable-next-line
-            projectName = parsed.pathname.split("/")[2],
-            repoData = getRepoData(projectName)
+            projectName = parsed.pathname.split("/")[2]
 
-        // Update project values after Promise resolution
-        Promise.resolve(repoData)
-            .then((val) => {
+        repoData.push(getRepoData(projectName, project))
+    }
+
+    return Promise.all(repoData)
+        .then((repo) => {
+            for (const [val, project] of repo) {
                 console.log(`Looking for changes in ${project}`)
                 const [
                     updatedValues,
@@ -226,13 +230,13 @@ const updateProjectValues = async (): Promise<void> => {
                     console.log(`Changes found in ${project}, updating values`)
                     updateProjectValue(updatedValues)
                 }
-            })
-            .catch((err: Error) => {
-                console.error(`Error thrown for project ${project.name}. Only partial commit to Firestore completed.`)
-                
-                throw new Error(err.message)
-            })
-    }
+            }
+        })
+        .catch((err: Error) => {
+            console.error(err.message)
+            
+            throw new Error(err.message)
+        })
 }
 
 export default updateProjectValues
