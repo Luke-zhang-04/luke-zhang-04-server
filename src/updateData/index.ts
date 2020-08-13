@@ -207,7 +207,7 @@ export const getProjectData = (collection: string): Promise<ProjectData[]> => {
  */
 const updateProjectValues = async (): Promise<void> => {
     for (const project of await getProjects()) { // Get projects
-        console.log(`Updating ${project.name}`)
+        console.log(`Reading "${project.name}"`)
 
         const parsed = parseUrl(project.links.GitHub), // eslint-disable-next-line
             projectName = parsed.pathname.split("/")[2],
@@ -216,12 +216,14 @@ const updateProjectValues = async (): Promise<void> => {
         // Update project values after Promise resolution
         Promise.resolve(repoData)
             .then((val) => {
+                console.log(`Looking for changes in ${project}`)
                 const [
                     updatedValues,
                     didchange,
                 ] = getUpdatedProjectValues(val, project)
 
                 if (didchange) {
+                    console.log(`Changes found in ${project}, updating values`)
                     updateProjectValue(updatedValues)
                 }
             })
