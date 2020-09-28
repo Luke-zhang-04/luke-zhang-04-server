@@ -1,1 +1,3 @@
 test/cases/*.js linguist-detectable=false
+
+*.gql linguist-detectable=true
