@@ -1,4 +1,5 @@
 # Luke-zhang-04.github.io Server
+
 Server side code for Luke-zhang-04.github.io
 
 <p align="center">
@@ -14,4 +15,5 @@ A scheduled function that updates database values in a Firebase Firestore databa
 [Site](https://luke-zhang-04.github.io/)
 
 ## updateProjectValues()
+
 This function is executed on a schedule every day on AWS Lamdbda. It reads data from Firebase Firestore, and uses GraphQL and the GitHub API to read data from a GitHub Repository, and compares the certain values. If any values are different, they are writting to Firestore.
