@@ -6,11 +6,4 @@
  * @copyright Copyright (c) 2020 - 2021 Luke Zhang
  */
 
-interface Content {
-    token: string
-}
-
-declare const content: Content
-
-export const token: string
-export default content
+export * as firebase from "./firebase"

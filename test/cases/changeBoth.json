@@ -1,30 +1,30 @@
 {
-    "project": {
-        "date": 0,
-        "description": "My repo 4",
-        "file": "myRepo.svg",
-        "links": {
-            "GitHub": "https://github.com/"
-        },
-        "tags": [],
-        "lang": {
-            "name": "Python",
-            "colour": "#3572A5"
-        },
-        "name": "my-repo-4",
-        "collection": "projects"
+  "project": {
+    "date": 0,
+    "description": "My repo 4",
+    "file": "myRepo.svg",
+    "links": {
+      "GitHub": "https://github.com/"
     },
-    "repo": {
-        "name": "my-repo-4",
-        "languages": {
-            "edges": [
-                {
-                    "node": {
-                        "name": "TypeScript",
-                        "color": "#2b7489"
-                    }
-                }
-            ]
+    "tags": [],
+    "lang": {
+      "name": "Python",
+      "colour": "#3572A5"
+    },
+    "name": "my-repo-4",
+    "collection": "projects"
+  },
+  "repo": {
+    "name": "my-repo-4",
+    "languages": {
+      "edges": [
+        {
+          "node": {
+            "name": "TypeScript",
+            "color": "#2b7489"
+          }
         }
+      ]
     }
+  }
 }
