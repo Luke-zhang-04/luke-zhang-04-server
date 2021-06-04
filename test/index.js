@@ -7,10 +7,10 @@
  */
 
 /* eslint-disable @typescript-eslint/no-var-requires */
-const changeLang = require("./cases/changeLang").default,
-    changeDate = require("./cases/changeDate").default,
-    changeNone = require("./cases/changeNone").default,
-    changeBoth = require("./cases/changeBoth").default
+const changeLang = require("./cases/changeLang").default
+const changeDate = require("./cases/changeDate").default
+const changeNone = require("./cases/changeNone").default
+const changeBoth = require("./cases/changeBoth").default
 
 describe("Change repo data", () => {
     changeLang()

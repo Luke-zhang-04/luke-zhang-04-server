@@ -7,9 +7,9 @@
  */
 
 /* eslint-disable @typescript-eslint/no-var-requires */
-const {getUpdatedProjectValues} = require("../../lib/updateData"),
-    assert = require("assert"),
-    {repo, project} = require("./changeNone.json")
+const {getUpdatedProjectValues} = require("../../lib/updateData")
+const assert = require("assert")
+const {repo, project} = require("./changeNone.json")
 
 repo.pushedAt = new Date(0).toISOString()
 

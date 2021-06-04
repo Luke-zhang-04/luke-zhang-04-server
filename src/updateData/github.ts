@@ -52,20 +52,20 @@ interface PreQuery {
     repository: ProjectQuery
 }
 
-const octokit = new Octokit({auth: token}),
-    getRepoData = async (
-        name: string,
-        project: ProjectData,
-    ): Promise<[ProjectQuery, ProjectData]> => {
-        if (projectQuery === undefined) {
-            throw new Error("File ./gql/project.gql returned undefined")
-        }
-
-        const {repository} = (await octokit.graphql(projectQuery, {
-            name,
-        })) as PreQuery
-
-        return [repository, project]
+const octokit = new Octokit({auth: token})
+const getRepoData = async (
+    name: string,
+    project: ProjectData,
+): Promise<[ProjectQuery, ProjectData]> => {
+    if (projectQuery === undefined) {
+        throw new Error("File ./gql/project.gql returned undefined")
     }
+
+    const {repository} = (await octokit.graphql(projectQuery, {
+        name,
+    })) as PreQuery
+
+    return [repository, project]
+}
 
 export default getRepoData

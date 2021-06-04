@@ -18,7 +18,7 @@ module.exports = {
     parserOptions: {
         ecmaVersion: 2021,
         sourceType: "module",
-        project: ["./tsconfig.json"],
+        project: ["./tsconfig.eslint.json"],
     },
     plugins: ["@typescript-eslint", "prefer-arrow"],
     rules: {
@@ -154,4 +154,14 @@ module.exports = {
             },
         ],
     },
+    overrides: [
+        {
+            files: ["test/**/*.js"],
+            env: {
+                es2021: true,
+                node: true,
+                mocha: true,
+            },
+        },
+    ],
 }

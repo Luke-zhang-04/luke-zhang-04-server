@@ -90,108 +90,108 @@ export interface ProjectData extends InitialProjectData {
  * @returns {Promise<ProjectData[]>} Promise of an array of project data
  */
 export const getProjectData = (collection: string): Promise<ProjectData[]> => {
-        if (!db) {
-            throw new Error("db is undefined")
-        }
-
-        return db
-            .collection(collection)
-            .get()
-            .then((snapshot) => {
-                const data: ProjectData[] = []
-
-                snapshot.forEach((doc) => {
-                    data.push({
-                        ...(doc.data() as InitialProjectData),
-                        name: doc.id,
-                        collection,
-                    })
-                })
-
-                return data
-            })
-            .catch((err: Error) => {
-                throw new Error(err.message)
-            })
-    },
-    /**
-     * Asynchronous gets projects from both the collections and projects collections
-     *
-     * @returns {Promise<ProjectData[]>} All projects
-     */
-    getProjects = (): Promise<ProjectData[]> =>
-        Promise.all([getProjectData("projects"), getProjectData("collections")])
-            .then((val) => [...val[0], ...val[1]])
-            .catch((err: Error) => {
-                throw new Error(err.message)
-            }),
-    /**
-     * Updates a project which has outdated information
-     *
-     * @param {ProjectQuery} repo - Language data from GitHub GQL API
-     * @param {ProjectData} project - Project data from Firestore
-     * @returns {(ProjectData | boolean)[]} New project data and a boolean if data is changed
-     */
-    getUpdatedProjectValues = (
-        repo: ProjectQuery,
-        project: ProjectData,
-    ): [ProjectData, boolean] => {
-        const pushedAt = new Date(repo.pushedAt).getTime()
-
-        if (repo.languages.edges[0].node.name === project.lang.name && pushedAt === project.date) {
-            return [project, false]
-        }
-
-        const _lang = repo.languages.edges[0].node,
-            newProject = {...project}
-
-        newProject.lang = {
-            name: _lang.name,
-            colour: _lang.color,
-        }
-
-        newProject.date = pushedAt
-
-        const dateMessage =
-                project.date === pushedAt
-                    ? `Date not changed, staying constant at ${pushedAt}`
-                    : `Date changed from ${project.date} to ${pushedAt}`,
-            langMessage =
-                project.lang.name === newProject.lang.name
-                    ? `Langauge not changed, staying constant at ${project.lang.name}`
-                    : `Language changed from ${project.lang.name} to ${newProject.lang.name}`
-
-        console.table([newProject.name, dateMessage, langMessage])
-
-        return [newProject, true]
-    },
-    /**
-     * Update project values to Firestore
-     *
-     * @param {ProjectData} project - Project to change
-     * @returns {Promise<void>} Void proise
-     */
-    updateProjectValue = async (project: ProjectData): Promise<void> => {
-        if (!db) {
-            throw new Error("db is undefined")
-        }
-
-        await db
-            .collection(project.collection)
-            .doc(project.name)
-            .set(
-                {
-                    lang: {
-                        name: project.lang.name,
-                        colour: project.lang.colour,
-                    },
-                    date: project.date,
-                },
-                {merge: true},
-            )
-
-        console.log(`Changed data in project ${project.name} in Firestore`)
+    if (!db) {
+        throw new Error("db is undefined")
     }
+
+    return db
+        .collection(collection)
+        .get()
+        .then((snapshot) => {
+            const data: ProjectData[] = []
+
+            snapshot.forEach((doc) => {
+                data.push({
+                    ...(doc.data() as InitialProjectData),
+                    name: doc.id,
+                    collection,
+                })
+            })
+
+            return data
+        })
+        .catch((err: Error) => {
+            throw new Error(err.message)
+        })
+}
+/**
+ * Asynchronous gets projects from both the collections and projects collections
+ *
+ * @returns {Promise<ProjectData[]>} All projects
+ */
+export const getProjects = (): Promise<ProjectData[]> =>
+    Promise.all([getProjectData("projects"), getProjectData("collections")])
+        .then((val) => [...val[0], ...val[1]])
+        .catch((err: Error) => {
+            throw new Error(err.message)
+        })
+/**
+ * Updates a project which has outdated information
+ *
+ * @param {ProjectQuery} repo - Language data from GitHub GQL API
+ * @param {ProjectData} project - Project data from Firestore
+ * @returns {(ProjectData | boolean)[]} New project data and a boolean if data is changed
+ */
+export const getUpdatedProjectValues = (
+    repo: ProjectQuery,
+    project: ProjectData,
+): [ProjectData, boolean] => {
+    const pushedAt = new Date(repo.pushedAt).getTime()
+
+    if (repo.languages.edges[0].node.name === project.lang.name && pushedAt === project.date) {
+        return [project, false]
+    }
+
+    const _lang = repo.languages.edges[0].node
+    const newProject = {...project}
+
+    newProject.lang = {
+        name: _lang.name,
+        colour: _lang.color,
+    }
+
+    newProject.date = pushedAt
+
+    const dateMessage =
+        project.date === pushedAt
+            ? `Date not changed, staying constant at ${pushedAt}`
+            : `Date changed from ${project.date} to ${pushedAt}`
+    const langMessage =
+        project.lang.name === newProject.lang.name
+            ? `Langauge not changed, staying constant at ${project.lang.name}`
+            : `Language changed from ${project.lang.name} to ${newProject.lang.name}`
+
+    console.table([newProject.name, dateMessage, langMessage])
+
+    return [newProject, true]
+}
+/**
+ * Update project values to Firestore
+ *
+ * @param {ProjectData} project - Project to change
+ * @returns {Promise<void>} Void proise
+ */
+export const updateProjectValue = async (project: ProjectData): Promise<void> => {
+    if (!db) {
+        throw new Error("db is undefined")
+    }
+
+    await db
+        .collection(project.collection)
+        .doc(project.name)
+        .set(
+            {
+                lang: {
+                    name: project.lang.name,
+                    colour: project.lang.colour,
+                },
+                date: project.date,
+            },
+            {merge: true},
+        )
+
+    console.log(`Changed data in project ${project.name} in Firestore`)
+}
 
 /**
  * Updates project values that have outdated information in Firestore
@@ -205,8 +205,8 @@ const updateProjectValues = async (): Promise<void> => {
         // Get projects
         console.log(`Reading "${project.name}"`)
 
-        const parsed = parseUrl(project.links.GitHub),
-            projectName = parsed.pathname.split("/")[2]
+        const parsed = parseUrl(project.links.GitHub)
+        const projectName = parsed.pathname.split("/")[2]
 
         repoData.push(getRepoData(projectName, project))
     }
@@ -215,9 +215,9 @@ const updateProjectValues = async (): Promise<void> => {
         .then((repo) => {
             for (const [val, project] of repo) {
                 console.log(`Looking for changes in ${project.name}`)
-                const [updatedValues, didchange] = getUpdatedProjectValues(val, project)
+                const [updatedValues, didChange] = getUpdatedProjectValues(val, project)
 
-                if (didchange) {
+                if (didChange) {
                     console.log(`Changes found in ${project.name}, updating values`)
                     updateProjectValue(updatedValues)
                 }
