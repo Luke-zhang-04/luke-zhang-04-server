@@ -10,6 +10,7 @@ import * as admin from "firebase-admin"
 import getRepoData, {ProjectQuery} from "./github"
 import niceTry from "nice-try"
 import parseUrl from "url-parse"
+import {snapshotToArray} from "../utils/firebase"
 
 type AdminSDK = typeof import("../../admin-sdk.json").default
 
@@ -86,56 +87,43 @@ export interface ProjectData extends InitialProjectData {
 /**
  * Gets project data from Firestroe
  *
- * @param {string} collection - Name of collection to pull data from
- * @returns {Promise<ProjectData[]>} Promise of an array of project data
+ * @param collection - Name of collection to pull data from
+ * @returns Promise of an array of project data
  */
-export const getProjectData = (collection: string): Promise<ProjectData[]> => {
+export const getProjectData = async (collection: string): Promise<ProjectData[]> => {
     if (!db) {
         throw new Error("db is undefined")
     }
 
-    return db
-        .collection(collection)
-        .get()
-        .then((snapshot) => {
-            const data: ProjectData[] = []
-
-            snapshot.forEach((doc) => {
-                data.push({
-                    ...(doc.data() as InitialProjectData),
-                    name: doc.id,
-                    collection,
-                })
-            })
-
-            return data
-        })
-        .catch((err: Error) => {
-            throw new Error(err.message)
-        })
+    return snapshotToArray(await db.collection(collection).get()).map((doc) => ({
+        ...(doc.data() as InitialProjectData),
+        name: doc.id,
+        collection,
+    }))
 }
 /**
  * Asynchronous gets projects from both the collections and projects collections
  *
- * @returns {Promise<ProjectData[]>} All projects
+ * @returns All projects
  */
-export const getProjects = (): Promise<ProjectData[]> =>
-    Promise.all([getProjectData("projects"), getProjectData("collections")])
-        .then((val) => [...val[0], ...val[1]])
-        .catch((err: Error) => {
-            throw new Error(err.message)
-        })
+export const getProjects = async (): Promise<ProjectData[]> => {
+    const documents = ["projects"]
+
+    return await Promise.all(documents.map((document) => getProjectData(document))).then(
+        (projects) => projects.flat(),
+    )
+}
 /**
  * Updates a project which has outdated information
  *
- * @param {ProjectQuery} repo - Language data from GitHub GQL API
- * @param {ProjectData} project - Project data from Firestore
- * @returns {(ProjectData | boolean)[]} New project data and a boolean if data is changed
+ * @param repo - Language data from GitHub GQL API
+ * @param project - Project data from Firestore
+ * @returns New project data and a boolean if data is changed
  */
 export const getUpdatedProjectValues = (
     repo: ProjectQuery,
     project: ProjectData,
-): [ProjectData, boolean] => {
+): [data: ProjectData, didChange: boolean] => {
     const pushedAt = new Date(repo.pushedAt).getTime()
 
     if (repo.languages.edges[0].node.name === project.lang.name && pushedAt === project.date) {
@@ -165,11 +153,12 @@ export const getUpdatedProjectValues = (
 
     return [newProject, true]
 }
+
 /**
  * Update project values to Firestore
  *
- * @param {ProjectData} project - Project to change
- * @returns {Promise<void>} Void proise
+ * @param project - Project to change
+ * @returns Void proise
  */
 export const updateProjectValue = async (project: ProjectData): Promise<void> => {
     if (!db) {
@@ -196,9 +185,9 @@ export const updateProjectValue = async (project: ProjectData): Promise<void> =>
 /**
  * Updates project values that have outdated information in Firestore
  *
- * @returns {Promise<void>} Void promise
+ * @returns Void promise
  */
-const updateProjectValues = async (): Promise<void> => {
+export const updateProjectValues = async (): Promise<void> => {
     const repoData: Promise<[ProjectQuery, ProjectData]>[] = []
 
     for (const project of await getProjects()) {
@@ -211,23 +200,15 @@ const updateProjectValues = async (): Promise<void> => {
         repoData.push(getRepoData(projectName, project))
     }
 
-    return Promise.all(repoData)
-        .then((repo) => {
-            for (const [val, project] of repo) {
-                console.log(`Looking for changes in ${project.name}`)
-                const [updatedValues, didChange] = getUpdatedProjectValues(val, project)
+    ;(await Promise.all(repoData)).map(([val, project]) => {
+        console.log(`Looking for changes in ${project.name}`)
+        const [updatedValues, didChange] = getUpdatedProjectValues(val, project)
 
-                if (didChange) {
-                    console.log(`Changes found in ${project.name}, updating values`)
-                    updateProjectValue(updatedValues)
-                }
-            }
-        })
-        .catch((err: Error) => {
-            console.error(err.message)
-
-            throw new Error(err.message)
-        })
+        if (didChange) {
+            console.log(`Changes found in ${project.name}, updating values`)
+            updateProjectValue(updatedValues)
+        }
+    })
 }
 
 export default updateProjectValues
