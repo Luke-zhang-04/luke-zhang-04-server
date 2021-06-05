@@ -54,27 +54,27 @@ try {
 
 const db = niceTry(() => admin.firestore())
 
-/* eslint-disable @typescript-eslint/naming-convention */
 /**
- * Structur of project data initially given from Firestore
+ * Structure of project data initially given from Firestore
  */
-interface InitialProjectData {
+export interface InitialProjectData {
     date: number
     description: string
     file: string
-    links: {
-        GitHub: string
-        PyPi?: string
-        NPM?: string
-        live?: string
-    }
-    tags: string[]
     lang: {
         name: string
         colour: string
     }
+    links: {
+        github: string
+        pypi?: string
+        npm?: string
+        live?: string
+        marketplace?: string
+    }
+    shortDescription: string
+    tags: string[]
 }
-/* eslint-enable @typescript-eslint/naming-convention */
 
 /**
  * Project data with additional information used throughout the project
@@ -194,7 +194,7 @@ export const updateProjectValues = async (): Promise<void> => {
         // Get projects
         console.log(`Reading "${project.name}"`)
 
-        const parsed = parseUrl(project.links.GitHub)
+        const parsed = parseUrl(project.links.github)
         const projectName = parsed.pathname.split("/")[2]
 
         repoData.push(getRepoData(projectName, project))

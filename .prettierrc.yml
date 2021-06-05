@@ -31,5 +31,6 @@ overrides:
       - "*.json"
       - "*.css"
       - "*.scss"
+      - "*.md"
     options:
       tabWidth: 2
