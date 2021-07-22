@@ -21,16 +21,21 @@ tags:
 
 Talentmaker is a company which strives encourage and empower students to pursure their future endeavours and career asprirations with real, hands on, and rewarding project experience.
 
+The project is a full stack web application written with an API-first approach, as well as TDD for the backend.
+
 ## Frontend
 
 - ReactJS
+  - React hooks
+  - Custom hooks
 - Typescript
 - Bootstrap
 - SCSS
 
-## Backend
+## Backend (private)
 
 - ExpressJS Rest API
 - AWS Lambda
-- AWS cognito
-- SQL database
+- AWS Cognito
+- MySQL relational database
+- Typescript
