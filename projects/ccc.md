@@ -7,6 +7,7 @@ tags:
   - competitive-programming
   - C++
   - Python
+ignore: true
 ---
 
 # CCC Solutions

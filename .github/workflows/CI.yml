@@ -9,11 +9,15 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 6.15.1
+
       - name: install deps
-        run: yarn --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: lint
-        run: yarn lint
+        run: pnpm lint
 
   build:
     runs-on: ubuntu-latest
@@ -21,11 +25,15 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 6.15.1
+
       - name: install deps
-        run: yarn --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: build
-        run: yarn build
+        run: pnpm build
 
       - uses: actions/upload-artifact@v2
         with:
@@ -39,6 +47,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 6.15.1
+
       - name: Download build
         uses: actions/download-artifact@v2
         with:
@@ -49,7 +61,7 @@ jobs:
         run: bash ciPrep.sh
 
       - name: install deps
-        run: yarn --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: test
-        run: yarn test
+        run: pnpm test

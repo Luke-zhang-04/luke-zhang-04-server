@@ -11,11 +11,15 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 6.15.1
+
       - name: install deps
-        run: yarn --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: build
-        run: yarn build
+        run: pnpm build
 
       - uses: actions/upload-artifact@v2
         with:
@@ -35,8 +39,12 @@ jobs:
           name: build
           path: lib
 
+      - uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 6.15.1
+
       - name: install deps
-        run: yarn --production
+        run: pnpm install --production
 
       - name: zip files
         run: zip updateProjectValues -r gql lib node_modules index.js
