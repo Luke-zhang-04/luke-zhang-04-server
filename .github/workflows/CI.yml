@@ -9,6 +9,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 6.15.1
+
       - name: install deps
         run: pnpm install --frozen-lockfile
 
@@ -20,6 +24,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+
+      - uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 6.15.1
 
       - name: install deps
         run: pnpm install --frozen-lockfile
@@ -38,6 +46,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+
+      - uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 6.15.1
 
       - name: Download build
         uses: actions/download-artifact@v2
