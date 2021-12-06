@@ -37,7 +37,6 @@ const projectDescriptions = await Promise.all(
 )
 
 /**
- *
  * @param {unknown} data
  * @returns {data is Pick<ProjectData, "links" | "shortDescription" | "tags"> & {name: string, ignore?: boolean}}
  */

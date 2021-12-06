@@ -3,3 +3,4 @@ tsconfig.json
 analysis
 build/
 lib
+pnpm-lock.yaml
