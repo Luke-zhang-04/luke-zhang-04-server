@@ -1,7 +1,7 @@
 ---
 name: Talentmaker
 links:
-  github: https://github.com/Luke-zhang-04/talentmaker-site
+  github: https://github.com/talentmaker/site
   live: https://talentmaker.ca/
 shortDescription: A full stack web application for Talentmaker
 tags:
