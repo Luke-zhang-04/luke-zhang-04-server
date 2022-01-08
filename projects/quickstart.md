@@ -2,6 +2,7 @@
 name: Quickstart
 links:
   github: https://github.com/Luke-zhang-04/quickstart
+ignore: true
 shortDescription: Quickstart a project with Bash scripts
 tags:
   - Bash

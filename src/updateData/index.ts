@@ -61,12 +61,13 @@ export interface InitialProjectData {
     date: number
     description: string
     file: string
-    lang: {
+    lang?: {
         name: string
         colour: string
     }
     links: {
-        github: string
+        github?: string
+        githubOrg?: string
         pypi?: string
         npm?: string
         live?: string
@@ -121,35 +122,30 @@ export const getProjects = async (): Promise<ProjectData[]> => {
  * @returns New project data and a boolean if data is changed
  */
 export const getUpdatedProjectValues = (
-    repo: ProjectQuery,
+    repo: ProjectQuery | undefined,
     project: ProjectData,
 ): [data: ProjectData, didChange: boolean] => {
+    if (repo === undefined) {
+        return [{...project, lang: undefined}, false]
+    }
+
     const pushedAt = new Date(repo.pushedAt).getTime()
 
-    if (repo.languages.edges[0].node.name === project.lang.name && pushedAt === project.date) {
+    if (repo.languages.edges[0]?.node.name === project.lang?.name && pushedAt === project.date) {
         return [project, false]
     }
 
-    const _lang = repo.languages.edges[0].node
+    const _lang = repo.languages.edges[0]?.node
     const newProject = {...project}
 
-    newProject.lang = {
-        name: _lang.name,
-        colour: _lang.color,
-    }
+    newProject.lang = _lang
+        ? {
+              name: _lang.name,
+              colour: _lang.color,
+          }
+        : undefined
 
     newProject.date = pushedAt
-
-    const dateMessage =
-        project.date === pushedAt
-            ? `Date not changed, staying constant at ${pushedAt}`
-            : `Date changed from ${project.date} to ${pushedAt}`
-    const langMessage =
-        project.lang.name === newProject.lang.name
-            ? `Langauge not changed, staying constant at ${project.lang.name}`
-            : `Language changed from ${project.lang.name} to ${newProject.lang.name}`
-
-    console.table([newProject.name, dateMessage, langMessage])
 
     return [newProject, true]
 }
@@ -170,10 +166,12 @@ export const updateProjectValue = async (project: ProjectData): Promise<void> =>
         .doc(project.name)
         .set(
             {
-                lang: {
-                    name: project.lang.name,
-                    colour: project.lang.colour,
-                },
+                lang: project.lang
+                    ? {
+                          name: project.lang.name,
+                          colour: project.lang.colour,
+                      }
+                    : undefined,
                 date: project.date,
             },
             {merge: true},
@@ -191,11 +189,15 @@ export const updateProjectValues = async (): Promise<void> => {
     const repoData: Promise<[ProjectQuery, ProjectData]>[] = []
 
     for (const project of await getProjects()) {
+        if (project.links.github === undefined) {
+            continue
+        }
+
         // Get projects
         console.log(`Reading "${project.name}"`)
 
         const parsed = parseUrl(project.links.github)
-        const projectName = parsed.pathname.split("/")[2]
+        const projectName = parsed.pathname.split("/")[2]!
 
         repoData.push(getRepoData(projectName, project))
     }
