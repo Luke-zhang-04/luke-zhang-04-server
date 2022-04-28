@@ -22,6 +22,8 @@ tags:
 
 # Talentmaker
 
+*Part Time Full Stack Engineering Contract | Aug 2020 - present*
+
 [![Website](https://img.shields.io/website?url=https%3A%2F%2Ftalentmaker.ca%2F&style=flat-square&logo=oracle)](https://talentmaker.ca)
 [![Frontend](https://img.shields.io/badge/frontend-talentmaker%2Fsite-green?style=flat-square&logo=github)](https://github.com/talentmaker/site)
 [![API](https://img.shields.io/badge/api-talentmaker%2Fapi-yellow?style=flat-square&logo=github)](https://github.com/talentmaker/api)

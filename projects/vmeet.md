@@ -12,6 +12,6 @@ tags:
 
 # VirtualMeet
 
-Employer: [Caleb Owens](mailto:caleb@theideabureau.co|caleb@theideabureau.co)
+*Part Time Full Stack Development Internship | Jul 2021 – Feb 2022*
 
-A part time internship with British startup [VirtualMeet](https://www.virtualmeet.com/), where I worked with a REST API made with Adonis, a React Native frontend, MySQL database, and more. I was able to learn a lot from talented individuals through this opportunity, and I'm glad I was a part of it.
+A part time internship with [VirtualMeet](https://www.virtualmeet.com/), a startup based in Britan, where I worked with a REST API made with Adonis, a React Native frontend, MySQL database, and more. I was able to learn a lot from talented individuals through this opportunity, and I'm glad I was a part of it.

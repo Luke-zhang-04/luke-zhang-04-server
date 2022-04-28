@@ -13,6 +13,8 @@ tags:
 
 ## KK Cabinets
 
+*Freelance Website Developer | Mar 2020 - Jul 2020*
+
 [![Made with DeStagnate](https://img.shields.io/badge/Made%20with-DeStagnate-blue?style=flat-square)](https://github.com/Luke-zhang-04/DeStagnate)
 [![Website Status](https://img.shields.io/website-up-down-green-red/https/kkcabinets.ca.svg?style=flat-square)](https://www.kkcabinets.ca)
 [![Made with Firebase](https://img.shields.io/badge/Uses-Firebase-%23ffca28?style=flat-square&logo=firebase)](https://firebase.google.com/)
