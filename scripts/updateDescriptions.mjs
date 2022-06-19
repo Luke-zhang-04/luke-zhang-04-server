@@ -6,7 +6,7 @@
  */
 
 import admin from "firebase-admin"
-import adminSDK from "../admin-sdk.json"
+import adminSDK from "../admin-sdk.json" assert {type: "json"}
 import {fileURLToPath} from "url"
 import path from "path"
 import {promises as fs} from "fs"

@@ -1,5 +1,5 @@
-query project($name: String!) {
-    repository(owner: "Luke-zhang-04", name: $name) {
+query project($owner: String!, $name: String!) {
+    repository(owner: $owner, name: $name) {
         name
         languages(first: 1, orderBy: {field: SIZE, direction: DESC}) {
             edges {

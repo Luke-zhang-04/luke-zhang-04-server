@@ -17,3 +17,5 @@ exports.handler = async () => {
 
     return 0
 }
+
+exports.handler()

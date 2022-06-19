@@ -54,6 +54,7 @@ interface PreQuery {
 
 const octokit = new Octokit({auth: token})
 const getRepoData = async (
+    owner: string,
     name: string,
     project: ProjectData,
 ): Promise<[ProjectQuery, ProjectData]> => {
@@ -62,6 +63,7 @@ const getRepoData = async (
     }
 
     const {repository} = (await octokit.graphql(projectQuery, {
+        owner,
         name,
     })) as PreQuery
 

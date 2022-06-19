@@ -197,9 +197,10 @@ export const updateProjectValues = async (): Promise<void> => {
         console.log(`Reading "${project.name}"`)
 
         const parsed = parseUrl(project.links.github)
+        const repoOwner = parsed.pathname.split("/")[1]!
         const projectName = parsed.pathname.split("/")[2]!
 
-        repoData.push(getRepoData(projectName, project))
+        repoData.push(getRepoData(repoOwner, projectName, project))
     }
 
     ;(await Promise.all(repoData)).map(([val, project]) => {
