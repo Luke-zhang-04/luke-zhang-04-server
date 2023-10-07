@@ -18,11 +18,12 @@ tags:
   - Docker
   - Go
   - Shell
+  - REST API
 ---
 
 # Talentmaker
 
-_Part Time Full Stack Engineering Contract | Aug 2020 - present_
+_Part Time Full Stack Engineering Contract | Aug 2020 - Feb 2022_
 
 [![Website](https://img.shields.io/website?url=https%3A%2F%2Ftalentmaker.ca%2F&style=flat-square&logo=oracle)](https://talentmaker.ca)
 [![Frontend](https://img.shields.io/badge/frontend-talentmaker%2Fsite-green?style=flat-square&logo=github)](https://github.com/talentmaker/site)
@@ -51,6 +52,8 @@ The project is a full stack web application written with an API-first approach, 
 - MySQL relational database
 - Prisma ORM
 - Typescript
+- JWT
+  - Set up proper lifecycles to mitigate XSS and CSRF attacks
 
 ## Web server
 
@@ -60,3 +63,4 @@ The project is a full stack web application written with an API-first approach, 
   - Cron
 - Go
 - NGINX
+- DNS management
